@@ -10,6 +10,8 @@ const App: React.FC = () => {
 
   // 사용자가 제공한 실제 카카오톡 채널 상담 링크
   const KAKAO_TALK_URL = "http://pf.kakao.com/_iBxlxon";
+  // 강연 정보 확인 링크
+  const LECTURE_INFO_URL = "https://ceri.knue.ac.kr/index.php/ceri8";
 
   return (
     <Layout>
@@ -138,15 +140,14 @@ const App: React.FC = () => {
 
                 <div className="pt-6 border-t border-gray-100">
                   <p className="text-xs text-gray-400 mb-4">* 본 커리큘럼은 요청 기관의 특성에 따라 맞춤형으로 조정 가능합니다.</p>
-                  <button 
-                    onClick={() => {
-                        setSelectedProgram(null);
-                        document.getElementById('contact')?.scrollIntoView();
-                    }}
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg"
+                  <a 
+                    href={LECTURE_INFO_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2"
                   >
-                    강연 문의하기
-                  </button>
+                    강연 정보 확인
+                  </a>
                 </div>
               </div>
             </div>
