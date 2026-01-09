@@ -8,8 +8,8 @@ const App: React.FC = () => {
   const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
   const [selectedGalleryItem, setSelectedGalleryItem] = useState<GalleryItem | null>(null);
 
-  // 카카오톡 상담 링크 (필요 시 실제 오픈채팅 링크로 수정 가능)
-  const KAKAO_TALK_URL = "https://open.kakao.com/o/s8m6XvX"; // 예시 링크입니다. 실제 링크로 교체하세요.
+  // 사용자가 제공한 실제 카카오톡 채널 상담 링크
+  const KAKAO_TALK_URL = "http://pf.kakao.com/_iBxlxon";
 
   return (
     <Layout>
