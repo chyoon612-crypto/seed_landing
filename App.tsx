@@ -10,8 +10,8 @@ const App: React.FC = () => {
 
   // 사용자가 제공한 실제 카카오톡 채널 상담 링크
   const KAKAO_TALK_URL = "http://pf.kakao.com/_iBxlxon";
-  // 강연 정보 확인 링크
-  const LECTURE_INFO_URL = "https://ceri.knue.ac.kr/index.php/ceri8";
+  // 강연 정보 확인 상세 링크 (uid 파라미터가 포함된 최신 경로로 업데이트)
+  const LECTURE_INFO_URL = "https://ceri.knue.ac.kr/index.php/ceri8/?uid=6&task=train_content";
 
   return (
     <Layout>
