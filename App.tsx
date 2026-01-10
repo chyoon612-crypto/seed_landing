@@ -12,12 +12,18 @@ const App: React.FC = () => {
   const [selectedGalleryItem, setSelectedGalleryItem] = useState<GalleryItem | null>(null);
   const [showBrochure, setShowBrochure] = useState(false);
   const [brochureViewMode, setBrochureViewMode] = useState<'image' | 'text'>('image');
+  const [isDownloading, setIsDownloading] = useState(false);
   
   const brochureRef = useRef<HTMLDivElement>(null);
+  const hiddenPdfRef = useRef<HTMLDivElement>(null);
 
   // 사용자가 제공한 실제 카카오톡 채널 상담 링크
   const KAKAO_TALK_URL = "http://pf.kakao.com/_iBxlxon";
   
+  // 외부 링크 설정
+  const MULTICULTURAL_LECTURE_URL = "https://ceri.knue.ac.kr/index.php/ceri8/?uid=6&task=train_content"; // 다문화
+  const CAREER_EXPLORATION_URL = "https://ceri.knue.ac.kr/index.php/ceri8"; // 진로 탐색
+
   // 브로셔 이미지 리스트 (001.png ~ 013.png)
   const brochureImages = Array.from({ length: 13 }, (_, i) => {
     const num = String(i + 1).padStart(3, '0');
@@ -42,19 +48,26 @@ const App: React.FC = () => {
   ];
 
   // PDF 다운로드 기능
-  const downloadPDF = () => {
-    if (!brochureRef.current) return;
+  const downloadPDF = async (targetRef: React.RefObject<HTMLDivElement | null>) => {
+    if (!targetRef.current || isDownloading) return;
     
-    const element = brochureRef.current;
+    setIsDownloading(true);
+    const element = targetRef.current;
     const opt = {
       margin: 0,
-      filename: 'SEED_진로탐색_프로그램_소개서.pdf',
+      filename: 'SEED_교육정보_자료.pdf',
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
+      html2canvas: { scale: 2, useCORS: true, logging: false },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
     
-    html2pdf().set(opt).from(element).save();
+    try {
+      await html2pdf().set(opt).from(element).save();
+    } catch (error) {
+      console.error("PDF Download Error:", error);
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   // 모달 오픈 시 스크롤 잠금
@@ -68,6 +81,21 @@ const App: React.FC = () => {
 
   return (
     <Layout>
+      {/* Hidden Container for Direct PDF Download */}
+      <div style={{ position: 'absolute', top: '-9999px', left: '-9999px', width: '800px' }}>
+        <div ref={hiddenPdfRef} className="bg-white">
+          {brochureImages.map((src, index) => (
+            <div key={index} style={{ pageBreakAfter: 'always' }}>
+              <img 
+                src={`./${src}`} 
+                alt={`Page ${index + 1}`}
+                style={{ width: '100%', display: 'block' }}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Brochure Modal (상세 안내 이미지 뷰어) */}
       {showBrochure && (
         <div className="fixed inset-0 z-[150] flex flex-col bg-slate-950 animate-in fade-in duration-300">
@@ -77,27 +105,32 @@ const App: React.FC = () => {
               <div className="flex flex-col">
                 <h3 className="text-white font-bold text-lg md:text-xl flex items-center gap-2">
                   <span className="bg-emerald-500 w-1.5 h-6 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.5)]"></span>
-                  진로 탐색 프로그램 상세 안내서
+                  교육정보 상세 안내서
                 </h3>
-                <p className="text-slate-400 text-xs hidden sm:block">Total 13 Pages • SEED Education Platform</p>
+                <p className="text-slate-400 text-xs hidden sm:block">SEED Education Info Brochure</p>
               </div>
             </div>
             
             <div className="flex items-center gap-2 md:gap-4">
               <button 
                 onClick={() => setBrochureViewMode(brochureViewMode === 'image' ? 'text' : 'image')}
-                className="flex items-center gap-2 px-3 py-2 md:px-5 md:py-2.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded-2xl text-sm font-bold transition-all border border-emerald-500/30 group"
+                className="flex items-center gap-2 px-3 py-2 md:px-5 md:py-2.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded-2xl text-sm font-bold transition-all border border-emerald-500/30"
               >
-                <span className="group-hover:scale-110 transition-transform">{brochureViewMode === 'image' ? '📄' : '🖼️'}</span>
+                <span>{brochureViewMode === 'image' ? '📄' : '🖼️'}</span>
                 <span className="hidden xs:inline">{brochureViewMode === 'image' ? '텍스트 모드' : '이미지 모드'}</span>
               </button>
               
               <button 
-                onClick={downloadPDF}
-                className="flex items-center gap-2 px-3 py-2 md:px-5 md:py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl text-sm font-bold transition-all shadow-[0_8px_20px_rgba(16,185,129,0.3)] active:scale-95"
+                onClick={() => downloadPDF(brochureRef)}
+                disabled={isDownloading}
+                className={`flex items-center gap-2 px-3 py-2 md:px-5 md:py-2.5 ${isDownloading ? 'bg-emerald-800' : 'bg-emerald-600 hover:bg-emerald-500'} text-white rounded-2xl text-sm font-bold transition-all shadow-lg active:scale-95`}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                <span className="hidden xs:inline">PDF 저장</span>
+                {isDownloading ? (
+                   <span className="animate-spin text-lg">↻</span>
+                ) : (
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                )}
+                <span className="hidden xs:inline">{isDownloading ? '다운로드 중...' : 'PDF 자료 다운로드'}</span>
               </button>
 
               <button 
@@ -129,6 +162,20 @@ const App: React.FC = () => {
                   <span className="truncate font-medium">{brochureData[i]?.title || `Page ${i+1}`}</span>
                 </button>
               ))}
+              <div className="mt-6 pt-6 border-t border-white/5">
+                 <button 
+                    onClick={() => downloadPDF(brochureRef)}
+                    disabled={isDownloading}
+                    className="w-full bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white p-4 rounded-xl text-xs font-bold transition-all border border-emerald-600/30 flex items-center justify-center gap-2"
+                 >
+                    {isDownloading ? (
+                      <span className="animate-spin">↻</span>
+                    ) : (
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                    )}
+                    PDF 전체 다운로드
+                 </button>
+              </div>
             </aside>
 
             {/* Viewer Content */}
@@ -184,9 +231,21 @@ const App: React.FC = () => {
                 {/* Final Footer */}
                 <div className="py-20 text-center">
                    <div className="max-w-md mx-auto bg-slate-900/80 p-10 rounded-[2.5rem] border border-white/10">
-                      <h3 className="text-white text-xl font-black mb-6">교육 문의 및 상담 안내</h3>
-                      <p className="text-slate-400 mb-8 text-sm">상세 커리큘럼 및 일정이 궁금하시다면 카카오톡으로 언제든 문의주세요.</p>
+                      <h3 className="text-white text-xl font-black mb-6">교육정보 자료 안내</h3>
+                      <p className="text-slate-400 mb-8 text-sm">상세 교육내용이 담긴 PDF 자료를 다운로드하여 확인하실 수 있습니다.</p>
                       <div className="flex flex-col gap-3">
+                        <button 
+                          onClick={() => downloadPDF(brochureRef)}
+                          disabled={isDownloading}
+                          className="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-4 rounded-2xl font-black shadow-lg transition-all flex items-center justify-center gap-2"
+                        >
+                          {isDownloading ? (
+                            <span className="animate-spin text-lg">↻</span>
+                          ) : (
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                          )}
+                          {isDownloading ? '다운로드 중...' : 'PDF 자료 저장하기'}
+                        </button>
                         <a 
                           href={KAKAO_TALK_URL}
                           target="_blank" 
@@ -199,7 +258,7 @@ const App: React.FC = () => {
                           onClick={() => setShowBrochure(false)}
                           className="bg-white/5 hover:bg-white/10 text-white px-8 py-4 rounded-2xl font-bold transition-all border border-white/5"
                         >
-                          안내서 닫기
+                          닫기
                         </button>
                       </div>
                    </div>
@@ -342,15 +401,55 @@ const App: React.FC = () => {
 
                 <div className="pt-6 border-t border-gray-100">
                   <p className="text-xs text-gray-400 mb-4">* 본 커리큘럼은 요청 기관의 특성에 따라 맞춤형으로 조정 가능합니다.</p>
-                  <button 
-                    onClick={() => {
-                        setSelectedProgram(null);
-                        setShowBrochure(true);
-                    }}
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2"
-                  >
-                    강연 정보 확인
-                  </button>
+                  
+                  <div className={`grid grid-cols-1 ${selectedProgram.id === 'p1' ? '' : 'sm:grid-cols-2'} gap-3`}>
+                    {/* 프로그램에 따른 강연 정보 확인 버튼 분기 */}
+                    {selectedProgram.id === 'p1' ? (
+                      <a 
+                        href={MULTICULTURAL_LECTURE_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2"
+                      >
+                        강연 정보 확인
+                      </a>
+                    ) : selectedProgram.id === 'p3' ? (
+                      <a 
+                        href={CAREER_EXPLORATION_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2"
+                      >
+                        강연 정보 확인
+                      </a>
+                    ) : (
+                      <button 
+                        onClick={() => {
+                            setSelectedProgram(null);
+                            setShowBrochure(true);
+                        }}
+                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2"
+                      >
+                        강연 정보 확인
+                      </button>
+                    )}
+
+                    {/* PDF 자료 다운로드 버튼 (다문화이해교육 p1 제외하고 노출) */}
+                    {selectedProgram.id !== 'p1' && (
+                      <button 
+                        onClick={() => downloadPDF(hiddenPdfRef)}
+                        disabled={isDownloading}
+                        className={`w-full ${isDownloading ? 'bg-emerald-200 text-emerald-600' : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'} font-bold py-4 rounded-2xl transition-all border border-emerald-200 flex items-center justify-center gap-2`}
+                      >
+                        {isDownloading ? (
+                          <span className="animate-spin text-lg">↻</span>
+                        ) : (
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                        )}
+                        {isDownloading ? '다운로드 중...' : '교육정보 PDF 다운로드'}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
