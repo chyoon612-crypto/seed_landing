@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from './components/Layout';
 import { PROGRAMS, GALLERY } from './constants';
 import { Program, GalleryItem } from './types';
@@ -7,14 +7,102 @@ import { Program, GalleryItem } from './types';
 const App: React.FC = () => {
   const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
   const [selectedGalleryItem, setSelectedGalleryItem] = useState<GalleryItem | null>(null);
+  const [showBrochure, setShowBrochure] = useState(false);
 
   // 사용자가 제공한 실제 카카오톡 채널 상담 링크
   const KAKAO_TALK_URL = "http://pf.kakao.com/_iBxlxon";
-  // 강연 정보 확인 상세 링크 (uid 파라미터가 포함된 최신 경로로 업데이트)
-  const LECTURE_INFO_URL = "https://ceri.knue.ac.kr/index.php/ceri8/?uid=6&task=train_content";
+  
+  // 브로셔 이미지 리스트 (001.png ~ 013.png)
+  const brochureImages = Array.from({ length: 13 }, (_, i) => {
+    const num = String(i + 1).padStart(3, '0');
+    return `${num}.png`;
+  });
+
+  // 모달 오픈 시 스크롤 잠금
+  useEffect(() => {
+    if (selectedProgram || selectedGalleryItem || showBrochure) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [selectedProgram, selectedGalleryItem, showBrochure]);
 
   return (
     <Layout>
+      {/* Brochure Modal (상세 안내 이미지 뷰어) */}
+      {showBrochure && (
+        <div className="fixed inset-0 z-[150] flex flex-col bg-black/95 backdrop-blur-xl animate-in fade-in duration-300">
+          <div className="flex justify-between items-center p-4 md:p-6 bg-black/50 sticky top-0 z-[160] border-b border-white/10">
+            <h3 className="text-white font-bold text-lg md:text-xl flex items-center gap-2">
+              <span className="bg-emerald-500 w-2 h-6 rounded-full"></span>
+              진로 탐색 프로그램 상세 안내
+            </h3>
+            <button 
+              onClick={() => setShowBrochure(false)}
+              className="p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all group"
+              aria-label="브로셔 닫기"
+            >
+              <svg className="w-8 h-8 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          
+          <div className="flex-1 overflow-y-auto custom-scrollbar p-2 md:p-8">
+            <div className="max-w-4xl mx-auto space-y-4 md:space-y-8">
+              {brochureImages.map((src, index) => (
+                <div key={index} className="rounded-xl overflow-hidden shadow-2xl bg-gray-900 border border-white/5 relative group">
+                  <div className="absolute top-4 left-4 z-10 bg-black/50 text-white/50 text-xs px-2 py-1 rounded backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                    PAGE {index + 1}
+                  </div>
+                  <img 
+                    src={src} 
+                    alt={`진로 탐색 프로그램 안내 페이지 ${index + 1}`}
+                    className="w-full h-auto select-none"
+                    loading="lazy"
+                    onError={(e) => {
+                      // 이미지 로드 실패 시 대체 표시 (개발 단계 확인용)
+                      const target = e.target as HTMLImageElement;
+                      target.src = `https://placehold.co/800x1000/064e3b/ffffff?text=Brochure+Page+${index + 1}+(${src})`;
+                    }}
+                  />
+                </div>
+              ))}
+              
+              <div className="py-20 text-center">
+                <p className="text-gray-400 mb-8">안내 책자의 모든 내용을 확인하셨습니다.</p>
+                <div className="flex flex-col sm:flex-row justify-center gap-4">
+                  <a 
+                    href={KAKAO_TALK_URL}
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="bg-[#FEE500] text-[#3C1E1E] px-10 py-4 rounded-2xl font-black text-lg shadow-lg hover:scale-105 transition-transform"
+                  >
+                    카카오톡으로 즉시 상담하기
+                  </a>
+                  <button 
+                    onClick={() => setShowBrochure(false)}
+                    className="bg-white/10 text-white px-10 py-4 rounded-2xl font-bold hover:bg-white/20 transition-colors"
+                  >
+                    닫기
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Scroll Top Button */}
+          <button 
+            onClick={() => document.querySelector('.custom-scrollbar')?.scrollTo({top: 0, behavior: 'smooth'})}
+            className="fixed bottom-8 right-8 p-4 bg-emerald-600 text-white rounded-full shadow-2xl hover:bg-emerald-500 transition-colors z-[160]"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+          </button>
+        </div>
+      )}
+
       {/* Gallery Detail Modal (활동 사진/영상 더보기) */}
       {selectedGalleryItem && (
         <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md modal-enter">
@@ -140,14 +228,15 @@ const App: React.FC = () => {
 
                 <div className="pt-6 border-t border-gray-100">
                   <p className="text-xs text-gray-400 mb-4">* 본 커리큘럼은 요청 기관의 특성에 따라 맞춤형으로 조정 가능합니다.</p>
-                  <a 
-                    href={LECTURE_INFO_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button 
+                    onClick={() => {
+                        setSelectedProgram(null);
+                        setShowBrochure(true);
+                    }}
                     className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2"
                   >
                     강연 정보 확인
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
