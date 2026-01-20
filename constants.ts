@@ -63,8 +63,8 @@ export const GALLERY: GalleryItem[] = [
     id: "g1",
     type: 'image',
     url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80',
-    caption: '2023 하반기 리더십 컨퍼런스',
-    description: '리더십의 본질과 미래 역량에 대해 함께 고민하고 토론하는 시간을 가졌습니다.',
+    caption: '찾아가는 진로 탐색 및 체험 교육',
+    description: '학생들이 자신의 적성을 찾고 미래를 설계하는 생생한 체험 중심의 교육 현장입니다.',
     additionalMedia: [
       { type: 'image', url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80' },
       { type: 'image', url: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80' },
@@ -75,8 +75,8 @@ export const GALLERY: GalleryItem[] = [
     id: "g2",
     type: 'image',
     url: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80',
-    caption: '청소년 디지털 역량 강화 캠프',
-    description: '지역사회 청소년들과 함께 디지털 리터러시와 AI 윤리에 대해 즐겁게 학습한 현장입니다.',
+    caption: '다문화이해교육',
+    description: '서로의 문화를 존중하고 이해하며 편견 없는 세상을 만들어가는 씨드의 다문화 교육 활동입니다.',
     additionalMedia: [
       { type: 'image', url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80' },
       { type: 'image', url: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=800&q=80' }
@@ -97,8 +97,8 @@ export const GALLERY: GalleryItem[] = [
     id: "g4",
     type: 'image',
     url: 'https://images.unsplash.com/photo-1544531585-9847b68c8c86?auto=format&fit=crop&w=800&q=80',
-    caption: '찾아가는 사회적 가치 교육',
-    description: '다양한 공공기관과 학교를 방문하여 사회적 가치의 중요성을 알리고 있습니다.',
+    caption: '감성 힐링 공연 및 강연',
+    description: '음악과 스토리가 어우러진 공연을 통해 지친 마음을 위로하고 긍정의 힘을 나누는 힐링의 시간입니다.',
     additionalMedia: [
       { type: 'image', url: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80' },
       { type: 'image', url: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80' }
