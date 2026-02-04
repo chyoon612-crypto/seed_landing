@@ -21,7 +21,7 @@ const App: React.FC = () => {
   const KAKAO_TALK_URL = "http://pf.kakao.com/_iBxlxon";
   
   // 외부 링크 설정
-  const MULTICULTURAL_LECTURE_URL = "https://ceri.knue.ac.kr/index.php/ceri8/?uid=6&task=train_content"; // 다문화
+  const MULTICULTURAL_LECTURE_URL = "https://edu-resource-silk.vercel.app/"; // 다문화 (사용자 요청으로 업데이트)
   const CAREER_EXPLORATION_URL = "https://ceri.knue.ac.kr/index.php/ceri8"; // 진로 탐색
   const BLOG_URL = "https://blog.naver.com/gray612"; // 공식 블로그
 
