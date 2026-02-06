@@ -2,16 +2,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Layout from './components/Layout';
 import { PROGRAMS, GALLERY } from './constants';
-import { Program, GalleryItem } from './types';
+import { Program } from './types';
 
 // html2pdf 타입을 위한 선언 (index.html에서 CDN으로 로드됨)
 declare var html2pdf: any;
 
 const App: React.FC = () => {
   const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
-  const [selectedGalleryItem, setSelectedGalleryItem] = useState<GalleryItem | null>(null);
   const [showBrochure, setShowBrochure] = useState(false);
-  const [brochureViewMode, setBrochureViewMode] = useState<'image' | 'text'>('image');
   const [isDownloading, setIsDownloading] = useState(false);
   
   const brochureRef = useRef<HTMLDivElement>(null);
@@ -24,11 +22,8 @@ const App: React.FC = () => {
   const RESOURCE_LINK = "https://edu-resource-silk.vercel.app/"; // 요청된 통합 리소스 링크
   const MULTICULTURAL_LECTURE_URL = RESOURCE_LINK; // 다문화
   const STUDENT_LED_LEARNING_URL = RESOURCE_LINK; // 학생주도적 진로 및 학습설계 (p2)
-  const CAREER_EXPLORATION_URL = "https://ceri.knue.ac.kr/index.php/ceri8"; // 진로 탐색
+  const CAREER_EXPLORATION_URL = RESOURCE_LINK; // 진로 탐색 (p3) - 요청에 따라 리소스 링크로 통합
   const BLOG_URL = "https://blog.naver.com/gray612"; // 공식 블로그
-
-  // 구글 드라이브 이미지 ID 추출 및 다이렉트 링크 생성
-  const ABOUT_IMAGE_URL = "https://drive.google.com/uc?export=view&id=13D7FWV8xxWALBx5bJKMtMS4NSKIQC7Cd";
 
   // 브로셔 이미지 리스트 (001.png ~ 013.png) - 제공된 PDF 스크린샷 대응
   const brochureImages = Array.from({ length: 13 }, (_, i) => {
@@ -61,12 +56,12 @@ const App: React.FC = () => {
 
   // 모달 오픈 시 스크롤 잠금
   useEffect(() => {
-    if (selectedProgram || selectedGalleryItem || showBrochure) {
+    if (selectedProgram || showBrochure) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-  }, [selectedProgram, selectedGalleryItem, showBrochure]);
+  }, [selectedProgram, showBrochure]);
 
   return (
     <Layout>
@@ -120,28 +115,6 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {/* Gallery Modal */}
-      {selectedGalleryItem && (
-        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md modal-enter">
-          <div className="bg-white w-full max-w-5xl h-[90vh] rounded-3xl overflow-hidden shadow-2xl flex flex-col">
-            <div className="p-6 border-b flex justify-between items-center bg-white sticky top-0">
-              <h3 className="text-2xl font-bold text-gray-900">{selectedGalleryItem.caption}</h3>
-              <button onClick={() => setSelectedGalleryItem(null)} className="p-2 hover:bg-gray-100 rounded-full transition-colors"><svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg></button>
-            </div>
-            <div className="flex-1 overflow-y-auto p-8 bg-gray-50">
-              <div className="max-w-4xl mx-auto space-y-8">
-                <div className="rounded-2xl overflow-hidden shadow-lg bg-black">
-                  {selectedGalleryItem.type === 'video' ? <video src={selectedGalleryItem.url} controls className="w-full aspect-video" autoPlay /> : <img src={selectedGalleryItem.url} className="w-full h-auto" alt={selectedGalleryItem.caption} />}
-                </div>
-                <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-                  <p className="text-gray-700 leading-relaxed text-lg">{selectedGalleryItem.description}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Program Detail Modal */}
       {selectedProgram && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm modal-enter">
@@ -178,7 +151,7 @@ const App: React.FC = () => {
                 <div className="pt-6 border-t border-gray-100">
                   <p className="text-xs text-gray-400 mb-4">* 본 커리큘럼은 요청 기관의 특성에 따라 맞춤형으로 조정 가능합니다.</p>
                   
-                  <div className={`grid grid-cols-1 ${selectedProgram.id === 'p3' ? 'sm:grid-cols-2' : ''} gap-3`}>
+                  <div className="grid grid-cols-1 gap-3">
                     {/* 강연 정보 확인 버튼 (프로그램별 분기) */}
                     {selectedProgram.id === 'p1' ? (
                       <a href={MULTICULTURAL_LECTURE_URL} target="_blank" rel="noopener noreferrer" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">강연 정보 확인</a>
@@ -190,18 +163,6 @@ const App: React.FC = () => {
                       <a href={BLOG_URL} target="_blank" rel="noopener noreferrer" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">강연 정보 확인</a>
                     ) : (
                       <button onClick={() => { setSelectedProgram(null); setShowBrochure(true); }} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg">상세 안내서 보기</button>
-                    )}
-
-                    {/* 진로 탐색 및 체험교육 (p3) 에 대해서만 PDF 다운로드 버튼 노출 */}
-                    {selectedProgram.id === 'p3' && (
-                      <button 
-                        onClick={() => downloadPDF(hiddenPdfRef)}
-                        disabled={isDownloading}
-                        className={`w-full ${isDownloading ? 'bg-emerald-200 text-emerald-600' : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'} font-bold py-4 rounded-2xl transition-all border border-emerald-200 flex items-center justify-center gap-2`}
-                      >
-                        {isDownloading ? <span className="animate-spin text-lg">↻</span> : <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>}
-                        {isDownloading ? '다운로드 중...' : '교육정보 PDF 다운로드'}
-                      </button>
                     )}
                   </div>
                 </div>
@@ -228,21 +189,64 @@ const App: React.FC = () => {
 
       <section id="about" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
             <div>
               <span className="text-emerald-600 font-bold tracking-widest uppercase text-sm block mb-4">About SEED</span>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">배움이 나눔이 되고,<br/>나눔이 성장이 되는 플랫폼</h2>
-              <div className="space-y-4 text-gray-600 leading-relaxed text-lg">
-                <p>씨드(SEED)는 단순히 지식을 전달하는 것을 넘어, 구성원들이 서로의 가치를 나누고 함께 성장하는 <b>'나눔 교육 플랫폼'</b>입니다.</p>
-                <p>우리는 정해진 정답을 가르치기보다 각자의 잠재력이 씨앗처럼 피어날 수 있도록 돕는 정성스러운 교육을 지향합니다.</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 leading-tight">배움이 나눔이 되고,<br/>나눔이 성장이 되는 플랫폼</h2>
+              <div className="space-y-6 text-gray-600 leading-relaxed text-lg">
+                <p>
+                  <b>씨드(SEED)</b>는 단순히 지식을 전달하는 것을 넘어, 교육의 모든 주체가 서로의 가치를 나누고 함께 성장하는 <b>'나눔 교육 플랫폼'</b>입니다.
+                </p>
+                <p>
+                  우리는 정해진 정답을 가르치기보다 각자의 잠재력이 씨앗처럼 피어날 수 있도록 돕는 <b>정성스러운 맞춤형 교육</b>을 지향합니다. 학습자가 스스로 자신의 길을 찾을 수 있는 자기 주도적 교육 환경을 구축하고 있습니다.
+                </p>
+                <div className="pt-4 border-t border-emerald-100">
+                  <p className="text-emerald-700 font-bold mb-2 flex items-center gap-2">
+                    <span className="text-xl">🌱</span> 누구나 교육의 주체가 되는 생태계
+                  </p>
+                  <p className="text-base text-gray-500">지식과 감성을 공유하며 더 나은 사회적 가치를 함께 만들어갑니다.</p>
+                </div>
               </div>
             </div>
-            <div className="relative">
-              <img 
-                src={ABOUT_IMAGE_URL} 
-                className="rounded-3xl shadow-2xl z-10 relative w-full h-auto object-cover" 
-                alt="About SEED" 
-              />
+            
+            <div className="bg-emerald-50 rounded-[3rem] p-8 md:p-12 border border-emerald-100/50 shadow-sm">
+              <h3 className="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+                <span className="text-3xl">🎯</span> 우리의 가치와 비전
+              </h3>
+              <div className="space-y-8">
+                <div>
+                  <h4 className="font-black text-emerald-700 text-xs mb-2 uppercase tracking-widest">MISSION</h4>
+                  <p className="text-gray-700 font-medium text-lg leading-snug">
+                    개인의 잠재력을 발견하고 성장을 돕는 혁신적인 교육 솔루션 제공
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-black text-emerald-700 text-xs mb-3 uppercase tracking-widest">CORE VALUES</h4>
+                  <ul className="space-y-5">
+                    <li className="flex gap-4">
+                      <span className="text-emerald-400 font-bold">01</span>
+                      <div>
+                        <h5 className="font-bold text-gray-900 text-base">다양성 존중</h5>
+                        <p className="text-sm text-gray-500">서로 다른 배경과 재능을 성장의 원동력으로 승화</p>
+                      </div>
+                    </li>
+                    <li className="flex gap-4">
+                      <span className="text-emerald-400 font-bold">02</span>
+                      <div>
+                        <h5 className="font-bold text-gray-900 text-base">자기 주도성</h5>
+                        <p className="text-sm text-gray-500">학습자 스스로 문제를 정의하고 해결하는 역량 강화</p>
+                      </div>
+                    </li>
+                    <li className="flex gap-4">
+                      <span className="text-emerald-400 font-bold">03</span>
+                      <div>
+                        <h5 className="font-bold text-gray-900 text-base">공감과 나눔</h5>
+                        <p className="text-sm text-gray-500">따뜻한 소통을 통해 공동체와 함께 피어나는 가치</p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -270,14 +274,25 @@ const App: React.FC = () => {
 
       <section id="gallery" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-12"><h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">강연 및 활동 갤러리</h2><p className="text-gray-600">현장의 생생한 열기를 확인해보세요.</p></div>
+          <div className="mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">강연 및 활동 갤러리</h2>
+            <p className="text-gray-600">현장의 생생한 열기를 확인해보세요.</p>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {GALLERY.map((item) => (
-              <div key={item.id} onClick={() => setSelectedGalleryItem(item)} className="group relative overflow-hidden rounded-3xl bg-gray-100 aspect-[4/3] cursor-pointer shadow-md hover:shadow-2xl transition-all duration-300">
-                {item.type === 'video' ? <video src={item.url} poster={item.thumbnail} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" muted /> : <img src={item.url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={item.caption} />}
+              <a 
+                key={item.id} 
+                href={BLOG_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative overflow-hidden rounded-3xl bg-gray-100 aspect-[4/3] cursor-pointer shadow-md hover:shadow-2xl transition-all duration-300"
+              >
+                <img src={item.url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={item.caption} />
                 <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-transparent to-transparent"></div>
-                <div className="absolute inset-0 flex flex-col justify-end p-8"><h4 className="text-white text-xl font-bold">{item.caption}</h4></div>
-              </div>
+                <div className="absolute inset-0 flex flex-col justify-end p-8">
+                  <h4 className="text-white text-xl font-bold">{item.caption}</h4>
+                </div>
+              </a>
             ))}
           </div>
         </div>
