@@ -21,9 +21,14 @@ const App: React.FC = () => {
   const KAKAO_TALK_URL = "http://pf.kakao.com/_iBxlxon";
   
   // 외부 링크 설정
-  const MULTICULTURAL_LECTURE_URL = "https://edu-resource-silk.vercel.app/"; // 다문화 (사용자 요청으로 업데이트)
+  const RESOURCE_LINK = "https://edu-resource-silk.vercel.app/"; // 요청된 통합 리소스 링크
+  const MULTICULTURAL_LECTURE_URL = RESOURCE_LINK; // 다문화
+  const STUDENT_LED_LEARNING_URL = RESOURCE_LINK; // 학생주도적 진로 및 학습설계 (p2)
   const CAREER_EXPLORATION_URL = "https://ceri.knue.ac.kr/index.php/ceri8"; // 진로 탐색
   const BLOG_URL = "https://blog.naver.com/gray612"; // 공식 블로그
+
+  // 구글 드라이브 이미지 ID 추출 및 다이렉트 링크 생성
+  const ABOUT_IMAGE_URL = "https://drive.google.com/uc?export=view&id=13D7FWV8xxWALBx5bJKMtMS4NSKIQC7Cd";
 
   // 브로셔 이미지 리스트 (001.png ~ 013.png) - 제공된 PDF 스크린샷 대응
   const brochureImages = Array.from({ length: 13 }, (_, i) => {
@@ -178,7 +183,7 @@ const App: React.FC = () => {
                     {selectedProgram.id === 'p1' ? (
                       <a href={MULTICULTURAL_LECTURE_URL} target="_blank" rel="noopener noreferrer" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">강연 정보 확인</a>
                     ) : selectedProgram.id === 'p2' ? (
-                      <a href={BLOG_URL} target="_blank" rel="noopener noreferrer" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">강연 정보 확인</a>
+                      <a href={STUDENT_LED_LEARNING_URL} target="_blank" rel="noopener noreferrer" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">강연 정보 확인</a>
                     ) : selectedProgram.id === 'p3' ? (
                       <a href={CAREER_EXPLORATION_URL} target="_blank" rel="noopener noreferrer" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2">강연 정보 확인</a>
                     ) : selectedProgram.id === 'p4' ? (
@@ -232,7 +237,13 @@ const App: React.FC = () => {
                 <p>우리는 정해진 정답을 가르치기보다 각자의 잠재력이 씨앗처럼 피어날 수 있도록 돕는 정성스러운 교육을 지향합니다.</p>
               </div>
             </div>
-            <div className="relative"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" className="rounded-3xl shadow-2xl z-10 relative" alt="About" /></div>
+            <div className="relative">
+              <img 
+                src={ABOUT_IMAGE_URL} 
+                className="rounded-3xl shadow-2xl z-10 relative w-full h-auto object-cover" 
+                alt="About SEED" 
+              />
+            </div>
           </div>
         </div>
       </section>
