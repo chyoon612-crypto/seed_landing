@@ -172,7 +172,7 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {/* Sections ... */}
+      {/* Hero Section */}
       <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" className="w-full h-full object-cover brightness-50" alt="Hero" />
@@ -187,6 +187,7 @@ const App: React.FC = () => {
         </div>
       </section>
 
+      {/* About Section */}
       <section id="about" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
@@ -217,31 +218,31 @@ const App: React.FC = () => {
                 <div>
                   <h4 className="font-black text-emerald-700 text-xs mb-2 uppercase tracking-widest">MISSION</h4>
                   <p className="text-gray-700 font-medium text-lg leading-snug">
-                    개인의 잠재력을 발견하고 성장을 돕는 혁신적인 교육 솔루션 제공
+                    누구나 차별 없이 행복한 배움의 기회를 누리고 함께 성장하는 사회를 만드는 일에 헌신한다.
                   </p>
                 </div>
                 <div>
                   <h4 className="font-black text-emerald-700 text-xs mb-3 uppercase tracking-widest">CORE VALUES</h4>
-                  <ul className="space-y-5">
+                  <ul className="space-y-6">
                     <li className="flex gap-4">
-                      <span className="text-emerald-400 font-bold">01</span>
+                      <span className="text-emerald-400 font-bold text-lg">01</span>
                       <div>
-                        <h5 className="font-bold text-gray-900 text-base">다양성 존중</h5>
-                        <p className="text-sm text-gray-500">서로 다른 배경과 재능을 성장의 원동력으로 승화</p>
+                        <h5 className="font-bold text-gray-900 text-lg">교육의 평등</h5>
+                        <p className="text-sm text-gray-500 leading-relaxed">공정한 교육의 기회를 통해 잠재능력과 가능성을 최대한 발휘</p>
                       </div>
                     </li>
                     <li className="flex gap-4">
-                      <span className="text-emerald-400 font-bold">02</span>
+                      <span className="text-emerald-400 font-bold text-lg">02</span>
                       <div>
-                        <h5 className="font-bold text-gray-900 text-base">자기 주도성</h5>
-                        <p className="text-sm text-gray-500">학습자 스스로 문제를 정의하고 해결하는 역량 강화</p>
+                        <h5 className="font-bold text-gray-900 text-lg">소 통</h5>
+                        <p className="text-sm text-gray-500 leading-relaxed">먼저 나와 소통하고 나아가 세상과 소통하는 리더십 계발</p>
                       </div>
                     </li>
                     <li className="flex gap-4">
-                      <span className="text-emerald-400 font-bold">03</span>
+                      <span className="text-emerald-400 font-bold text-lg">03</span>
                       <div>
-                        <h5 className="font-bold text-gray-900 text-base">공감과 나눔</h5>
-                        <p className="text-sm text-gray-500">따뜻한 소통을 통해 공동체와 함께 피어나는 가치</p>
+                        <h5 className="font-bold text-gray-900 text-lg">나눔의 선순환</h5>
+                        <p className="text-sm text-gray-500 leading-relaxed">함께 더불어 살아가는 세상을 만듦</p>
                       </div>
                     </li>
                   </ul>
@@ -252,6 +253,7 @@ const App: React.FC = () => {
         </div>
       </section>
 
+      {/* Programs Section */}
       <section id="programs" className="py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -272,6 +274,7 @@ const App: React.FC = () => {
         </div>
       </section>
 
+      {/* Gallery Section */}
       <section id="gallery" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12">
@@ -298,6 +301,7 @@ const App: React.FC = () => {
         </div>
       </section>
 
+      {/* Contact Section */}
       <section id="contact" className="py-24 bg-emerald-950 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div><h2 className="text-3xl md:text-5xl font-black mb-8 leading-tight">변화를 만드는 배움,<br/><span className="text-emerald-400">씨드와 함께하세요.</span></h2></div>
