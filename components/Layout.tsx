@@ -11,10 +11,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <div className="min-h-screen flex flex-col">
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-20">
             <div className="flex-shrink-0 flex items-center">
-              <span className="text-2xl font-bold text-emerald-600 tracking-tight">SEED</span>
-              <span className="ml-2 text-sm font-medium text-gray-500 hidden sm:block">{COMPANY_NAME}</span>
+              <span className="text-3xl md:text-4xl font-black text-emerald-600 tracking-tighter">SEED</span>
+              <span className="ml-3 text-base md:text-lg font-bold text-gray-800 hidden sm:block">{COMPANY_NAME}</span>
             </div>
             <nav className="hidden md:flex space-x-8">
               <a href="#about" className="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-colors">소개</a>
