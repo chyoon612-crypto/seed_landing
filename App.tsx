@@ -23,7 +23,7 @@ const App: React.FC = () => {
   const MULTICULTURAL_LECTURE_URL = RESOURCE_LINK; // 다문화
   const STUDENT_LED_LEARNING_URL = RESOURCE_LINK; // 학생주도적 진로 및 학습설계 (p2)
   const CAREER_EXPLORATION_URL = "https://k39wl7vyoy.ufs.sh/f/zYZHPgngbfkIx21euRs6obIQKYFa4kei0SN532hfTAVCjmru"; // 진로 탐색 (p3)
-  const HERO_GUIDE_URL = "https://k39wl7vyoy.ufs.sh/f/zYZHPgngbfkIx21euRs6obIQKYFa4kei0SN532hfTAVCjmru"; // 히어로 섹션 상세 안내서
+  const HERO_GUIDE_URL = "https://k39wl7vyoy.ufs.sh/f/zYZHPgngbfkIehOxwwkVp2HWJaDzYeTw4dGPcFn1xECSKU7X"; // 히어로 섹션 상세 안내서
   const BLOG_URL = "https://blog.naver.com/gray612"; // 공식 블로그
 
   // 브로셔 이미지 리스트 (001.png ~ 013.png) - 제공된 PDF 스크린샷 대응
