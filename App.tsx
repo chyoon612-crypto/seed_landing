@@ -22,7 +22,8 @@ const App: React.FC = () => {
   const RESOURCE_LINK = "https://edu-resource-silk.vercel.app/"; // 요청된 통합 리소스 링크
   const MULTICULTURAL_LECTURE_URL = RESOURCE_LINK; // 다문화
   const STUDENT_LED_LEARNING_URL = RESOURCE_LINK; // 학생주도적 진로 및 학습설계 (p2)
-  const CAREER_EXPLORATION_URL = RESOURCE_LINK; // 진로 탐색 (p3) - 요청에 따라 리소스 링크로 통합
+  const CAREER_EXPLORATION_URL = "https://k39wl7vyoy.ufs.sh/f/zYZHPgngbfkIx21euRs6obIQKYFa4kei0SN532hfTAVCjmru"; // 진로 탐색 (p3)
+  const HERO_GUIDE_URL = "https://k39wl7vyoy.ufs.sh/f/zYZHPgngbfkIViYeAhPqxh1V47jnYOc5mAWKNL6SHdBMDtel"; // 히어로 섹션 상세 안내서
   const BLOG_URL = "https://blog.naver.com/gray612"; // 공식 블로그
 
   // 브로셔 이미지 리스트 (001.png ~ 013.png) - 제공된 PDF 스크린샷 대응
@@ -180,9 +181,20 @@ const App: React.FC = () => {
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight drop-shadow-lg">함께 나누고 함께 피어나는<br/><span className="text-emerald-400">교육의 가치</span></h1>
           <p className="text-xl text-gray-200 mb-10 font-medium">다가치나눔교육플랫폼 씨드는 새로운 배움의 문화를 선도합니다.</p>
-          <div className="flex justify-center gap-4">
+          <div className="flex justify-center gap-4 mb-8">
             <a href="#programs" className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 rounded-full font-bold transition-all transform hover:scale-105 shadow-xl">프로그램 보기</a>
             <a href="https://blog.naver.com/gray612" target="_blank" rel="noopener noreferrer" className="bg-white hover:bg-gray-100 text-gray-900 px-8 py-4 rounded-full font-bold transition-all transform hover:scale-105 shadow-xl">공식 블로그</a>
+          </div>
+          <div className="flex justify-center">
+            <a 
+              href={HERO_GUIDE_URL} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-all group py-2 px-4 rounded-xl hover:bg-white/10"
+            >
+              <span className="font-bold border-b border-emerald-400/50 group-hover:border-emerald-400 pb-0.5">씨드 프로그램 상세 안내서 보기</span>
+              <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            </a>
           </div>
         </div>
       </section>
