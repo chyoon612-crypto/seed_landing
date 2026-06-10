@@ -17,14 +17,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <span className="ml-3 text-base md:text-lg font-bold text-gray-800 hidden sm:block">{COMPANY_NAME}</span>
             </div>
             <nav className="hidden md:flex space-x-8">
-              <a href="#about" className="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-colors">소개</a>
-              <a href="#programs" className="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-colors">프로그램</a>
-              <a href="#gallery" className="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-colors">갤러리</a>
-              <a href="#contact" className="text-gray-600 hover:text-emerald-600 px-3 py-2 text-sm font-medium transition-colors">강연문의</a>
-              <a href="https://blog.naver.com/gray612" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 px-3 py-2 text-sm font-bold flex items-center gap-1">
+              <a href="#about" className="text-gray-700 hover:text-emerald-600 px-3 py-2 text-base md:text-lg font-bold transition-colors">소개</a>
+              <a href="#programs" className="text-gray-700 hover:text-emerald-600 px-3 py-2 text-base md:text-lg font-bold transition-colors">프로그램</a>
+              <a href="#gallery" className="text-gray-700 hover:text-emerald-600 px-3 py-2 text-base md:text-lg font-bold transition-colors">갤러리</a>
+              <a href="#contact" className="text-gray-700 hover:text-emerald-600 px-3 py-2 text-base md:text-lg font-bold transition-colors">강연문의</a>
+              <a href="https://blog.naver.com/gray612" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 px-3 py-2 text-base md:text-lg font-extrabold flex items-center gap-1.5">
                 블로그
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
               </a>
             </nav>
